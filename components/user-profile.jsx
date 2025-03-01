@@ -123,7 +123,7 @@ const UserProfile = ({ user, userDetails }) => {
 					<CardContent className="space-y-4">
 						<div className="pt-6">
 							<div className="sm:flex items-center gap-10 max-sm:pb-6">
-								<Avatar className="h-24 w-24">
+								<Avatar className="h-24 w-24 border-2 border-primary/20">
 									<AvatarImage
 										src={userDetails?.photoURL}
 										alt="user profile pic"
