@@ -20,7 +20,7 @@ import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Card, CardContent } from "@/components/ui/card";
-import CustomInput from "../custom-input";
+import CustomInput from "../../../components/custom-input";
 import { auth, db } from "@/firebase/firebase";
 import SignInWithGoogle from "./google-login";
 import { storeUser } from "@/lib/cookieStore";

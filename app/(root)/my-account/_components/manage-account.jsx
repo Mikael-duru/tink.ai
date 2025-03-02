@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ChangePassword from "@/components/change-password";
-import UserProfile from "@/components/user-profile";
 import { useGetUserInfo } from "@/lib/getUserInfo";
+import UserProfile from "./user-profile";
+import ChangePassword from "./change-password";
 
 const UserAccount = () => {
 	const { user, userDetails } = useGetUserInfo();

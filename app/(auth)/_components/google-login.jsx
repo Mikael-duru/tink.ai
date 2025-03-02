@@ -5,7 +5,7 @@ import React from "react";
 import { toast } from "react-hot-toast";
 
 import { auth, db } from "@/firebase/firebase";
-import { Button } from "../ui/button";
+import { Button } from "../../../components/ui/button";
 import Image from "next/image";
 import { storeUser } from "@/lib/cookieStore";
 

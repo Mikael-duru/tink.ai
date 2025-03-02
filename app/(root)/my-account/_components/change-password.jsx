@@ -22,9 +22,9 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
-import CustomInput from "./custom-input";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/firebase/firebase";
+import CustomInput from "@/components/custom-input";
 
 const formSchema = z.object({
 	currentPassword: z.string().min(6, {

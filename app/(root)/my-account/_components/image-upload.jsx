@@ -2,9 +2,9 @@ import { Loader2, Upload } from "lucide-react";
 import React, { useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 
-import { Button } from "./ui/button";
 import { db } from "@/firebase/firebase";
 import toast from "react-hot-toast";
+import { Button } from "@/components/ui/button";
 
 const ProfileImageUpload = ({ user, userDetails }) => {
 	const [isLoading, setIsLoading] = useState(false);
