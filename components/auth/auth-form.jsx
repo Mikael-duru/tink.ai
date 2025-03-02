@@ -16,14 +16,14 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import Image from "next/image";
 import { Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
-import { setCookie } from "cookies-next";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Card, CardContent } from "@/components/ui/card";
 import CustomInput from "../custom-input";
-import { auth, db, getUserToken } from "@/firebase/firebase";
+import { auth, db } from "@/firebase/firebase";
 import SignInWithGoogle from "./google-login";
+import { storeUser } from "@/lib/cookieStore";
 
 const formSchema = (type) =>
 	z.object({
@@ -122,7 +122,7 @@ const AuthForm = ({ type }) => {
 				const userId = user.uid;
 
 				// Store userId in cookies
-				setCookie("__session", userId);
+				await storeUser({ idToken: userId });
 
 				// Check if user document already exists in Firestore
 				const userDoc = await getDoc(doc(db, "users", user.uid));

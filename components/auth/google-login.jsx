@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { auth, db } from "@/firebase/firebase";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import { storeUser } from "@/lib/cookieStore";
 
 const SignInWithGoogle = () => {
 	const router = useRouter();
@@ -21,7 +22,7 @@ const SignInWithGoogle = () => {
 			const userId = user.uid;
 
 			// Store userId in cookies
-			setCookie("__session", userId);
+			await storeUser({ idToken: userId });
 
 			if (user) {
 				// Extract first name and last name from displayName
