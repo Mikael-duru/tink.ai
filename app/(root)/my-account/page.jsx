@@ -1,5 +1,4 @@
-import UserAccount from "@/components/manage-account";
-import React from "react";
+import UserAccount from "./_components/manage-account";
 
 const MyAccount = () => {
 	return <UserAccount />;
