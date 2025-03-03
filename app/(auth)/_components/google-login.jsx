@@ -2,7 +2,7 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 
 import { auth, db } from "@/firebase/firebase";
 import { Button } from "../../../components/ui/button";

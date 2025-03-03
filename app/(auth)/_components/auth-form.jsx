@@ -15,7 +15,7 @@ import {
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import Image from "next/image";
 import { Loader2 } from "lucide-react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
