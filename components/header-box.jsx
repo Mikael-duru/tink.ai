@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 import Link from "next/link";
@@ -15,6 +14,7 @@ import {
 	PenBox,
 	StarsIcon,
 } from "lucide-react";
+import { toast } from "sonner";
 
 import { auth, db } from "@/firebase/firebase";
 import AvatarDropdown from "./avatar-dropdown";

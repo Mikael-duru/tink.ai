@@ -1,7 +1,16 @@
 "use server";
 
-import { getUserId } from "@/lib/getUserId";
+import { cookies } from "next/headers";
+
 import { db } from "@/lib/prisma";
+import { generateAIInsights } from "./dashboard";
+
+export const getUserId = async () => {
+	const cookieStore = await cookies();
+	const userId = cookieStore.get("__session")?.value;
+
+	return userId;
+};
 
 export const updateUser = async (data) => {
 	const userId = await getUserId();
@@ -20,25 +29,21 @@ export const updateUser = async (data) => {
 		const result = await db.$transaction(
 			async (tx) => {
 				// Check if the industry exists
-				let industryInsights = await tx.industryInsight.findUnique({
+				let industryInsight = await tx.industryInsight.findUnique({
 					where: {
 						industry: data.industry,
 					},
 				});
 
-				// If industry doesn't exist, create a new one with data.industry and default values.
-				if (!industryInsights) {
-					industryInsights = await tx.industryInsight.create({
+				// If industryInsight doesn't exist, create a new one with data.industry using Gemini-1.5-fresh AI.
+				if (!industryInsight) {
+					const insights = await generateAIInsights(data.industry);
+
+					industryInsight = await db.industryInsight.create({
 						data: {
 							industry: data.industry,
-							salaryRanges: [],
-							growthRate: 0,
-							demandLevel: "MEDIUM",
-							topSkills: [],
-							marketOutlook: "NEUTRAL",
-							keyTrends: [],
-							recommendedSkills: [],
-							nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week from now
+							...insights,
+							nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
 						},
 					});
 				}
@@ -56,7 +61,7 @@ export const updateUser = async (data) => {
 					},
 				});
 
-				return { updatedUser, industryInsights };
+				return { updatedUser, industryInsight };
 			},
 			{
 				timeout: 10000, // default is 5000

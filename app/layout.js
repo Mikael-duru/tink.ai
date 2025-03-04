@@ -1,8 +1,10 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+
 import { ThemeProvider } from "@/components/theme-provider";
 import { ToasterProvider } from "@/lib/toastProvider";
 import Header from "@/components/header";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
 	subsets: ["latin"],
@@ -30,6 +32,7 @@ export default function RootLayout({ children }) {
 
 					{/* content */}
 					<main className="min-h-screen">{children}</main>
+					<Toaster richColors />
 
 					{/* footer */}
 					<footer className="bg-muted/50 py-12">
