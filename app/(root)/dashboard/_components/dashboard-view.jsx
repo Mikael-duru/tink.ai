@@ -77,7 +77,7 @@ const DashboardView = ({ insights }) => {
 
 	return (
 		<div className="space-y-8">
-			<div className="flex justify-between items-center">
+			<div className="flex justify-between items-center max-sm:mb-10">
 				<Badge variant="outline">Last Updated: {lastUpdatedDate}</Badge>
 			</div>
 

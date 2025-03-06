@@ -4,7 +4,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 import { db } from "@/lib/prisma";
 import { getUserId } from "./user";
-import { prompt } from "@/lib/utils";
+import { industryInsightPrompt } from "@/lib/utils";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({
@@ -12,7 +12,7 @@ const model = genAI.getGenerativeModel({
 });
 
 export const generateAIInsights = async (industry) => {
-	const result = await model.generateContent(prompt(industry));
+	const result = await model.generateContent(industryInsightPrompt(industry));
 	const responseText = result.response.text();
 
 	const cleanedResponseText = responseText

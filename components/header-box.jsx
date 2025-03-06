@@ -124,26 +124,22 @@ const Header = () => {
 									</Button>
 								</DropdownMenuTrigger>
 								<DropdownMenuContent className="mt-1">
-									<DropdownMenuItem>
-										<Link href="/resume" className="flex items-center gap-2">
-											<FileText size={16} />
-											Build Resume
-										</Link>
+									<DropdownMenuItem
+										onClick={() => router.push("/resume")}
+										className="flex items-center gap-2 cursor-pointer"
+									>
+										<FileText size={16} />
+										Build Resume
 									</DropdownMenuItem>
-									<DropdownMenuItem>
-										<Link
-											href="/ai-cover-letter"
-											className="flex items-center gap-2"
-										>
-											<PenBox size={16} />
-											Cover Letter
-										</Link>
+									<DropdownMenuItem onClick={() => router.push("/ai-cover-letter")}
+										className="flex items-center gap-2 cursor-pointer">
+										<PenBox size={16} />
+										Cover Letter
 									</DropdownMenuItem>
-									<DropdownMenuItem>
-										<Link href="/interview" className="flex items-center gap-2">
-											<GraduationCap size={16} />
-											Interview Prep
-										</Link>
+									<DropdownMenuItem onClick={() => router.push("/interview")}
+										className="flex items-center gap-2 cursor-pointer">
+										<GraduationCap size={16} />
+										Interview Prep
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
