@@ -48,7 +48,7 @@ model Assessment {
 model Resume {
   id        String   @id @default(cuid())
   userId    String   @unique
-  content   String   @db.Text // Markdown content
+  content   Json // form values content
   atsScore  Float?
   feedback  String?
   createdAt DateTime @default(now())
