@@ -31,8 +31,8 @@ const HeroSection = () => {
 	}, []);
 
 	return (
-		<section className="w-full pt-36 md:pt-48 pb-16">
-			<div className="space-y-6 text-center">
+		<section className="w-full pt-36 md:pt-48 pb-16 border overflow-hidden">
+			<div className="text-center">
 				<div className="space-y-6 mx-auto px-2">
 					<h1 className="gradient-title text-4xl font-bold md:text-5xl lg:text-6xl xl:text-7xl">
 						Your AI-Powered Career Coach <br /> for Professional Success.
@@ -41,22 +41,17 @@ const HeroSection = () => {
 						Unlock career growth with AI-driven guidance, interview coaching,
 						job market insights, and smart career tools.
 					</p>
+
+					<div className="w-[160px] mx-auto">
+						<Link href="/dashboard">
+							<Button size="lg" className="px-8 w-full">
+								Get Started
+							</Button>
+						</Link>
+					</div>
 				</div>
 
-				<div className="flex justify-center space-x-4">
-					<Link href="/dashboard">
-						<Button size="lg" className="px-8">
-							Get Started
-						</Button>
-					</Link>
-					<Link href="#how-it-works">
-						<Button size="lg" className="px-8" variant="outline">
-							See Guide
-						</Button>
-					</Link>
-				</div>
-
-				<div className="hero-image-wrapper mx-auto max-lg:px-4 max-2xl:px-16">
+				<div className="hero-image-wrapper px-2">
 					<div ref={imageRef} className="hero-image">
 						<Image
 							src={"/hero-banner.jpeg"}
