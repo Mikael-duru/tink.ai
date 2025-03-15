@@ -92,14 +92,14 @@ const ChangePassword = () => {
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Password</CardTitle>
-				<CardDescription>
-					Change your password here. After saving, you'll be logged out.
-				</CardDescription>
+				<CardTitle className="gradient-title text-3xl">
+					Change Password
+				</CardTitle>
+				<CardDescription>After saving, you'll be logged out.</CardDescription>
 			</CardHeader>
 			<CardContent className="space-y-2">
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 						<CustomInput
 							control={form.control}
 							name="currentPassword"

@@ -115,15 +115,12 @@ const UserProfile = ({ user, userDetails }) => {
 
 	return (
 		<Card>
-			<CardHeader>
-				<CardTitle>Profile</CardTitle>
-			</CardHeader>
-			<CardContent className="space-y-10">
+			<CardContent className="space-y-8 pt-6">
 				<Card>
-					<CardContent className="space-y-4">
-						<div className="pt-6">
-							<div className="sm:flex items-center gap-10 max-sm:pb-6">
-								<Avatar className="h-24 w-24 border-2 border-primary/20">
+					<CardContent className="space-y-4 max-sm:px-4">
+						<div className="pt-6 sm:flex justify-between max-sm:text-center">
+							<div>
+								<Avatar className="h-24 w-24 border-2 border-primary/20 max-sm:mx-auto">
 									<AvatarImage
 										src={userDetails?.photoURL}
 										alt="user profile pic"
@@ -132,11 +129,11 @@ const UserProfile = ({ user, userDetails }) => {
 										<UserRoundCheck size={50} />
 									</AvatarFallback>
 								</Avatar>
-								<div className="max-sm:pt-4">
-									<h1 className="text-2xl font-bold">
+								<div className="pt-2">
+									<h1 className="gradient-title text-2xl -mb-2">
 										{userDetails?.displayName}
 									</h1>
-									<p className="text-sm text-muted-foreground">
+									<p className="text-sm sm:text-base text-muted-foreground">
 										{userDetails?.email}
 									</p>
 								</div>
@@ -146,9 +143,11 @@ const UserProfile = ({ user, userDetails }) => {
 					</CardContent>
 				</Card>
 
-				<Card>
+				<Card className="border-red-900">
 					<CardHeader>
-						<CardTitle>Delete Account</CardTitle>
+						<CardTitle className="gradient-title text-3xl">
+							Delete Account
+						</CardTitle>
 						<CardDescription>
 							This action cannot be undone. This will permanently delete your
 							account and remove your data from our server.

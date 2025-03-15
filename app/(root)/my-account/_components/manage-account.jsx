@@ -27,10 +27,12 @@ const UserAccount = () => {
 	};
 
 	return (
-		<div className="flex flex-col items-center justify-center p-4 gap-6 max-w-[550px] mx-auto">
+		<div className="container mx-auto flex flex-col items-center justify-center p-4 gap-6 max-w-2xl">
 			<div className="self-start ">
-				<h1 className="text-3xl font-bold">My Account</h1>
-				<p className="pt-1">Manage your account info.</p>
+				<h1 className="text-5xl md:text-6xl font-bold gradient-title mb-1">
+					My Account
+				</h1>
+				<p className="text-muted-foreground">Manage your account info.</p>
 			</div>
 			<Tabs
 				value={activeTab}
