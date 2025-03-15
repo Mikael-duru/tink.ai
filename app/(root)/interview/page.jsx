@@ -9,8 +9,8 @@ const InterviewPage = async () => {
 
 	return (
 		<div>
-			<h1 className="text-6xl font-bold gradient-title mb-8">
-				Interview Coaching
+			<h1 className="text-5xl md:text-6xl font-bold gradient-title mb-8">
+				Interview Preparation
 			</h1>
 
 			<div className="space-y-8">
