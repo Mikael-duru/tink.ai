@@ -35,6 +35,7 @@ const Quiz = () => {
 		fn: saveQuizResultFn,
 		data: resultData,
 		setData: setResultData,
+		error: saveResultError,
 	} = useFetch(saveQuizResult);
 
 	useEffect(() => {
@@ -82,9 +83,12 @@ const Quiz = () => {
 
 		try {
 			await saveQuizResultFn(quizData, answers, score);
-			toast.success("Quiz completed");
+			if (!saveResultError) {
+				toast.success("Quiz completed");
+			}
 		} catch (error) {
-			toast.error(error.message || "Failed to save quiz results.");
+			console.error(error.message);
+			toast.error("Failed to save quiz results.");
 		}
 	};
 
