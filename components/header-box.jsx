@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { use, useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 import Link from "next/link";
 import Image from "next/image";
+import { toast } from "sonner";
+
 import {
 	ChevronDown,
 	FileText,
@@ -14,8 +16,6 @@ import {
 	PenBox,
 	StarsIcon,
 } from "lucide-react";
-import { toast } from "sonner";
-
 import { auth, db } from "@/firebase/firebase";
 import AvatarDropdown from "./avatar-dropdown";
 import { Button } from "./ui/button";
@@ -27,11 +27,23 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { deleteStoredUser } from "@/lib/cookieStore";
 
-const Header = () => {
+const Header = ({ authCookie }) => {
 	const [user, setUser] = useState(null);
 	const [firstName, setFirstName] = useState("");
 	const [photoURL, setPhotoURL] = useState("");
 	const router = useRouter();
+	const pathname = usePathname();
+
+	useEffect(() => {
+		const handleUserReset = async () => {
+			if (!authCookie) {
+				await signOut(auth);
+				resetUserState();
+			}
+		};
+
+		handleUserReset();
+	}, []);
 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
@@ -92,7 +104,11 @@ const Header = () => {
 		}
 	};
 
-	return (
+	// Check if the path starts with "sign-in" or "sign-up"
+	const isAuthPage =
+		pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up");
+
+	return !isAuthPage ? (
 		<header className="fixed top-0 w-full border-b bg-background/80 backdrop-blur-md z-50 supports-[backdrop-filter]:bg-background/60">
 			<nav className="container mx-auto px-4 h-16 flex items-center justify-between">
 				<Link href="/">
@@ -131,13 +147,17 @@ const Header = () => {
 										<FileText size={16} />
 										Build Resume
 									</DropdownMenuItem>
-									<DropdownMenuItem onClick={() => router.push("/ai-cover-letter")}
-										className="flex items-center gap-2 cursor-pointer">
+									<DropdownMenuItem
+										onClick={() => router.push("/ai-cover-letter")}
+										className="flex items-center gap-2 cursor-pointer"
+									>
 										<PenBox size={16} />
 										Cover Letter
 									</DropdownMenuItem>
-									<DropdownMenuItem onClick={() => router.push("/interview")}
-										className="flex items-center gap-2 cursor-pointer">
+									<DropdownMenuItem
+										onClick={() => router.push("/interview")}
+										className="flex items-center gap-2 cursor-pointer"
+									>
 										<GraduationCap size={16} />
 										Interview Prep
 									</DropdownMenuItem>
@@ -159,7 +179,7 @@ const Header = () => {
 				</div>
 			</nav>
 		</header>
-	);
+	) : null;
 };
 
 export default Header;
