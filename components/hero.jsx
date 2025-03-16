@@ -31,7 +31,7 @@ const HeroSection = () => {
 	}, []);
 
 	return (
-		<section className="w-full pt-36 md:pt-48 pb-16 border overflow-hidden">
+		<section className="w-full pt-36 md:pt-48 pb-16 overflow-hidden">
 			<div className="text-center">
 				<div className="space-y-6 mx-auto px-2">
 					<h1 className="gradient-title text-4xl font-bold md:text-5xl lg:text-6xl xl:text-7xl">
