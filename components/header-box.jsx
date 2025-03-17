@@ -148,7 +148,7 @@ const Header = ({ authCookie }) => {
 										Build Resume
 									</DropdownMenuItem>
 									<DropdownMenuItem
-										onClick={() => router.push("/ai-cover-letter")}
+										onClick={() => router.push("/cover-letter")}
 										className="flex items-center gap-2 cursor-pointer"
 									>
 										<PenBox size={16} />
