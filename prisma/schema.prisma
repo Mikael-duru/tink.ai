@@ -48,7 +48,7 @@ model Assessment {
 model Resume {
   id        String   @id @default(cuid())
   userId    String   @unique
-  content   Json // form values content
+  content   Json // resume content
   atsScore  Float?
   feedback  String?
   createdAt DateTime @default(now())
@@ -59,7 +59,7 @@ model Resume {
 model CoverLetter {
   id             String   @id @default(cuid())
   userId         String
-  content        String // Markdown content of the resume
+  content        String // Content of the cover letter
   jobDescription String?
   companyName    String
   jobTitle       String
