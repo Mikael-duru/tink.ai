@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { BarLoader } from "react-spinners";
 
-const DashboardLayout = ({ children }) => {
+const InterviewLayout = ({ children }) => {
 	return (
 		<div className="px-5">
 			<Suspense
@@ -13,4 +13,4 @@ const DashboardLayout = ({ children }) => {
 	);
 };
 
-export default DashboardLayout;
+export default InterviewLayout;
