@@ -187,7 +187,7 @@ const ResumeBuilder = ({
 					<Button
 						className="bg-green-600 text-white hover:bg-green-700"
 						onClick={handleSubmit(onSubmit)}
-						disabled={isSaving}
+						disabled={isSaving || activeTab !== "preview"}
 					>
 						{isSaving ? (
 							<>
