@@ -8,82 +8,44 @@ import { auth, db } from "@/firebase/firebase";
 import { Button } from "../../../components/ui/button";
 import Image from "next/image";
 import { storeUser } from "@/lib/cookieStore";
+import { getUserOnboardingStatus } from "@/actions/user";
 
 const SignInWithGoogle = () => {
 	const router = useRouter();
 
 	const handleGoogleLogin = async () => {
-		const provider = new GoogleAuthProvider();
-
 		try {
-			const result = await signInWithPopup(auth, provider);
+			const result = await signInWithPopup(auth, new GoogleAuthProvider());
 			const user = result.user;
 
-			const userId = user.uid;
-
 			// Store userId in cookies
-			await storeUser({ idToken: userId });
+			await storeUser({ idToken: user.uid });
 
-			if (user) {
-				// Extract first name and last name from displayName
-				const [firstName, lastName] = user.displayName
-					? user.displayName.split(" ")
-					: ["", ""];
-
-				// Check if user document already exists in Firestore
-				const userDocRef = doc(db, "users", user.uid);
-				const userDocSnapshot = await getDoc(userDocRef);
-
-				const userData = {
-					firstName: firstName,
-					lastName: lastName,
+			// Store user data to Firestore if it doesn't already exist
+			const userDocRef = doc(db, "users", user.uid);
+			const userDocSnapshot = await getDoc(userDocRef);
+			if (!userDocSnapshot.exists()) {
+				await setDoc(userDocRef, {
+					firstName: user.displayName.split(" ")[0],
+					lastName: user.displayName.split(" ")[1],
 					email: user.email,
 					id: user.uid,
 					photoURL: user.photoURL,
 					displayName: user.displayName,
 					imgPublicId: "", //From cloudinary
-				};
+				});
+			}
 
-				if (!userDocSnapshot.exists()) {
-					// Save user data to Firestore
-					await setDoc(userDocRef, userData);
-				}
-
-				// Temporary store user data in local storage
-				localStorage.setItem(
-					"GoogleData",
-					JSON.stringify({
-						userData,
-					})
-				);
-
+			// Redirect to onboarding if the user is not already onboarded
+			const { isOnboarded } = await getUserOnboardingStatus();
+			if (!isOnboarded) {
+				router.push("/onboarding");
+			} else {
 				router.push("/");
 			}
 		} catch (error) {
-			let errorMessage;
-			switch (error.code) {
-				case "auth/popup-closed-by-user":
-					errorMessage = "The popup was closed before completing the sign-in.";
-					break;
-				case "auth/operation-not-allowed":
-					errorMessage = "Sign-in method not enabled.";
-					break;
-				case "auth/timeout":
-					errorMessage = "The operation has timed out.";
-					break;
-				case "auth/too-many-requests":
-					errorMessage =
-						"Too many requests have been made. Please try again later.";
-					break;
-				case "auth/credential-already-in-use":
-					errorMessage =
-						"This credential is already associated with a different user account.";
-					break;
-				default:
-					errorMessage = "Failed to log in. Please try again.";
-			}
-			console.log(errorMessage);
-			toast.error(errorMessage);
+			console.error(error.message);
+			toast.error("Failed to log in. Please try again.");
 		}
 	};
 

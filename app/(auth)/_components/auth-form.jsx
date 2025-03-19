@@ -24,6 +24,7 @@ import CustomInput from "../../../components/custom-input";
 import { auth, db } from "@/firebase/firebase";
 import SignInWithGoogle from "./google-login";
 import { storeUser } from "@/lib/cookieStore";
+import { getUserOnboardingStatus } from "@/actions/user";
 
 const formSchema = (type) =>
 	z.object({
@@ -119,11 +120,6 @@ const AuthForm = ({ type }) => {
 
 				const user = userCredential.user;
 
-				const userId = user.uid;
-
-				// Store userId in cookies
-				await storeUser({ idToken: userId });
-
 				// Check if user document already exists in Firestore
 				const userDoc = await getDoc(doc(db, "users", user.uid));
 
@@ -133,9 +129,19 @@ const AuthForm = ({ type }) => {
 					);
 					await setDoc(doc(db, "users", user.uid), userRegistrationData);
 				}
-
-				router.push("/");
 				localStorage.removeItem("registrationData");
+
+				// Store userId in cookies
+				await storeUser({ idToken: user.uid });
+
+				// Redirect to onboarding if the user is not already onboarded
+				const { isOnboarded } = await getUserOnboardingStatus();
+
+				if (!isOnboarded) {
+					router.push("/onboarding");
+				} else {
+					router.push("/");
+				}
 			}
 
 			// Send password reset link
@@ -171,7 +177,6 @@ const AuthForm = ({ type }) => {
 				default:
 					errorMessage = "An error occurred. Please try again.";
 			}
-			console.log(error.message);
 			toast.error(errorMessage);
 		} finally {
 			setIsLoading(false);
