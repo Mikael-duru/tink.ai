@@ -1,3 +1,8 @@
+"use client";
+
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+
 import HeroSection from "@/components/hero";
 import { features } from "@/data/features";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,16 +15,36 @@ import {
 	AccordionTrigger,
 } from "@/components/ui/accordion";
 import TestimonialSlider from "@/components/testimonial-slider";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { auth } from "@/firebase/firebase";
+import { getUserId, getUserOnboardingStatus } from "@/actions/user";
+import { useEffect, useState } from "react";
+import { signOut } from "firebase/auth";
 
 export default function Home() {
+	const [userOnboarded, setUserOnboarded] = useState(false);
+	const currentUser = auth.currentUser;
+
+	useEffect(() => {
+		const handleUserOnboardingStatus = async () => {
+			const userId = await getUserId();
+			if (userId) {
+				const { isOnboarded } = await getUserOnboardingStatus();
+
+				if (isOnboarded) setUserOnboarded(isOnboarded);
+			} else {
+				await signOut(auth);
+			}
+		};
+
+		handleUserOnboardingStatus();
+	}, []);
+
 	return (
 		<div>
 			<div className="grid-background"></div>
 
-			<HeroSection />
+			<HeroSection currentUser={currentUser} isOnboarded={userOnboarded} />
 
 			{/* Features */}
 			<section className="w-full py-16 md:py-24 lg:py-32 bg-background">
@@ -146,7 +171,16 @@ export default function Home() {
 							Join thousands of professionals who are advancing their careers
 							with AI-powered guidance.
 						</p>
-						<Link href="/dashboard" passHref>
+						<Link
+							href={
+								!currentUser
+									? "/sign-in"
+									: !userOnboarded
+									? "/onboarding"
+									: "/dashboard"
+							}
+							passHref
+						>
 							<Button
 								size="lg"
 								variant="secondary"
