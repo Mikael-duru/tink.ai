@@ -17,8 +17,15 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const AvatarDropdown = ({ handleLogout, user, photoURL, firstName }) => {
+const AvatarDropdown = ({
+	handleLogout,
+	user,
+	photoURL,
+	firstName,
+	userOnboarded,
+}) => {
 	const router = useRouter();
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger>
@@ -52,8 +59,11 @@ const AvatarDropdown = ({ handleLogout, user, photoURL, firstName }) => {
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem
-					className="cursor-pointer sm:hidden"
+					className={`cursor-pointer ${
+						!userOnboarded ? "hidden" : "sm:hidden"
+					}`}
 					onClick={() => router.push("/dashboard")}
+					disabled={!userOnboarded}
 				>
 					<div className="flex items-center justify-center gap-4">
 						<div className="flex items-center justify-center w-12 h-12 shrink-0">

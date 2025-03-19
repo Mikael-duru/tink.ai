@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 
 import { Button } from "./ui/button";
 
-const HeroSection = () => {
+const HeroSection = ({ currentUser, isOnboarded }) => {
 	const imageRef = useRef(null);
 
 	useEffect(() => {
@@ -43,7 +43,15 @@ const HeroSection = () => {
 					</p>
 
 					<div className="w-[160px] mx-auto">
-						<Link href="/dashboard">
+						<Link
+							href={
+								!currentUser
+									? "/sign-in"
+									: !isOnboarded
+									? "/onboarding"
+									: "/dashboard"
+							}
+						>
 							<Button size="lg" className="px-8 w-full">
 								Get Started
 							</Button>

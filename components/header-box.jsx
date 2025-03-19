@@ -1,7 +1,7 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 import Link from "next/link";
@@ -26,61 +26,69 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { deleteStoredUser } from "@/lib/cookieStore";
+import { getUserId, getUserOnboardingStatus } from "@/actions/user";
 
-const Header = ({ authCookie }) => {
+const Header = () => {
 	const [user, setUser] = useState(null);
 	const [firstName, setFirstName] = useState("");
 	const [photoURL, setPhotoURL] = useState("");
+	const [userOnboarded, setUserOnboarded] = useState(false);
 	const router = useRouter();
 	const pathname = usePathname();
 
 	useEffect(() => {
-		const handleUserReset = async () => {
-			if (!authCookie) {
+		const handleUserOnboardingStatus = async () => {
+			const userId = await getUserId();
+			if (userId) {
+				const { isOnboarded } = await getUserOnboardingStatus();
+
+				if (isOnboarded) setUserOnboarded(isOnboarded);
+			} else {
 				await signOut(auth);
-				resetUserState();
 			}
 		};
 
-		handleUserReset();
-	}, []);
+		handleUserOnboardingStatus();
+	}, [pathname]);
 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
-			if (!authUser) {
-				resetUserState();
-				return;
-			}
+			if (authUser) {
+				setUser(authUser);
+				const userDocRef = doc(db, "users", authUser.uid);
 
-			setUser(authUser);
-			const userDocRef = doc(db, "users", authUser.uid);
+				const unsubscribeDoc = onSnapshot(userDocRef, async (docSnapshot) => {
+					if (docSnapshot.exists()) {
+						// Firestore has user data
+						const userData = docSnapshot.data();
+						setFirstName(userData.firstName || "");
+						setPhotoURL(userData.photoURL || "");
 
-			const unsubscribeDoc = onSnapshot(userDocRef, async (docSnapshot) => {
-				if (docSnapshot.exists()) {
-					// Firestore has user data
-					const userData = docSnapshot.data();
-					setFirstName(userData.firstName || "");
-					setPhotoURL(userData.photoURL || "");
-				} else {
-					// Try recovering Google-stored data
-					const googleStoredData = JSON.parse(
-						localStorage.getItem("GoogleData")
-					);
-					if (googleStoredData) {
-						await setDoc(userDocRef, googleStoredData);
 						localStorage.removeItem("GoogleData");
+					} else {
+						// Try recovering Google-stored data
+						const googleStoredData = JSON.parse(
+							localStorage.getItem("GoogleData")
+						);
+						if (googleStoredData) {
+							await setDoc(userDocRef, googleStoredData);
 
-						const createdUserDoc = await getDoc(userDocRef);
-						if (createdUserDoc.exists()) {
-							const userData = createdUserDoc.data();
-							setFirstName(userData.firstName || "");
-							setPhotoURL(userData.photoURL || "");
+							localStorage.removeItem("GoogleData");
+
+							const createdUserDoc = await getDoc(userDocRef);
+							if (createdUserDoc.exists()) {
+								const userData = createdUserDoc.data();
+								setFirstName(userData.firstName || "");
+								setPhotoURL(userData.photoURL || "");
+							}
 						}
 					}
-				}
-			});
+				});
 
-			return () => unsubscribeDoc();
+				return () => unsubscribeDoc();
+			} else {
+				resetUserState();
+			}
 		});
 
 		return () => unsubscribe();
@@ -108,32 +116,40 @@ const Header = ({ authCookie }) => {
 	const isAuthPage =
 		pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up");
 
+	const isUserOnboarding = pathname.startsWith("/onboarding");
+
 	return !isAuthPage ? (
 		<header className="fixed top-0 w-full border-b bg-background/80 backdrop-blur-md z-50 supports-[backdrop-filter]:bg-background/60">
 			<nav className="container mx-auto px-4 h-16 flex items-center justify-between">
 				<Link href="/">
 					<Image
-						src="/logo.png"
+						src="/ai-logo.png"
 						alt="Tink.ai Logo"
 						width={200}
 						height={60}
-						className="h-12 py-1 w-auto object-contain"
+						className="max-h-10 py-1 w-auto object-contain"
 					/>
 				</Link>
 
 				<div className="flex items-center space-x-2 sm:space-x-4">
 					{user ? (
 						<>
-							<Link href={"/dashboard"} className="max-sm:hidden">
-								<Button variant="outline">
-									<LayoutDashboard size={16} />
-									<span className="max-sm:hidden">Industry Insights</span>
-								</Button>
-							</Link>
+							<Button
+								variant="outline"
+								onClick={() => {
+									!userOnboarded
+										? router.push("/onboarding")
+										: router.push("/dashboard");
+								}}
+								className={`${isUserOnboarding ? "hidden" : "max-sm:hidden"}`}
+							>
+								<LayoutDashboard size={16} />
+								<span className="max-sm:hidden">Industry Insights</span>
+							</Button>
 
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
-									<Button>
+									<Button className={`${isUserOnboarding ? "hidden" : ""}`}>
 										<StarsIcon size={16} />
 										<span className="max-md:hidden">Growth Tools</span>
 										<ChevronDown size={16} />
@@ -141,21 +157,33 @@ const Header = ({ authCookie }) => {
 								</DropdownMenuTrigger>
 								<DropdownMenuContent className="mt-1">
 									<DropdownMenuItem
-										onClick={() => router.push("/resume")}
+										onClick={() => {
+											!userOnboarded
+												? router.push("/onboarding")
+												: router.push("/resume");
+										}}
 										className="flex items-center gap-2 cursor-pointer"
 									>
 										<FileText size={16} />
 										Build Resume
 									</DropdownMenuItem>
 									<DropdownMenuItem
-										onClick={() => router.push("/cover-letter")}
+										onClick={() =>
+											!userOnboarded
+												? router.push("/onboarding")
+												: router.push("/cover-letter")
+										}
 										className="flex items-center gap-2 cursor-pointer"
 									>
 										<PenBox size={16} />
 										Cover Letter
 									</DropdownMenuItem>
 									<DropdownMenuItem
-										onClick={() => router.push("/interview")}
+										onClick={() =>
+											!userOnboarded
+												? router.push("/onboarding")
+												: router.push("/interview")
+										}
 										className="flex items-center gap-2 cursor-pointer"
 									>
 										<GraduationCap size={16} />
@@ -169,6 +197,7 @@ const Header = ({ authCookie }) => {
 								user={user}
 								firstName={firstName}
 								photoURL={photoURL}
+								userOnboarded={userOnboarded}
 							/>
 						</>
 					) : (
