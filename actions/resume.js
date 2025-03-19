@@ -49,7 +49,7 @@ export const getResume = async () => {
 	});
 };
 
-export const improveWithAI = async ({ type, current }) => {
+export const improveWithAI = async ({ type, title, current }) => {
 	try {
 		const userId = await getUserId();
 		if (!userId) throw new Error("Unauthorized");
@@ -63,7 +63,12 @@ export const improveWithAI = async ({ type, current }) => {
 		const prompt =
 			type === "summary"
 				? improveSummaryPrompt({ userIndustry: user.industry, current })
-				: improveWithAIPrompt({ type, userIndustry: user.industry, current });
+				: improveWithAIPrompt({
+						type,
+						userIndustry: user.industry,
+						title,
+						current,
+				  });
 
 		const result = await model.generateContent(prompt);
 
