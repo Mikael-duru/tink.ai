@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -38,9 +39,9 @@ const Home = () => {
 							return (
 								<Card
 									key={index}
-									className="border-2 hover:border-primary transition-colors duration-300"
+									className="border-2 hover:border-primary transition-colors duration-300 text-center"
 								>
-									<CardHeader>
+									<CardHeader className="flex items-center justify-center flex-col">
 										{feature.icon}
 										<CardTitle className="text-xl font-bold">
 											{feature.title}
@@ -120,7 +121,7 @@ const Home = () => {
 			{/* CTA */}
 			<section className="w-full">
 				<div className="mx-auto py-24 gradient rounded-lg">
-					<div className="flex flex-col items-center justify-center space-y-4 text-center max-w-3xl mx-auto">
+					<div className="flex flex-col items-center justify-center space-y-4 text-center max-w-3xl mx-auto px-2">
 						<h2 className="text-3xl font-bold tracking-tighter text-primary-foreground sm:text-4xl md:text-5xl">
 							Ready to Accelerate Your Career?
 						</h2>
