@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useGetUserInfo } from "@/lib/getUserInfo";
+import { useGetUserInfo } from "@/hooks/get-user-info";
 import UserProfile from "./user-profile";
 import ChangePassword from "./change-password";
 

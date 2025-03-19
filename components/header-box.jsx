@@ -25,70 +25,79 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { deleteStoredUser } from "@/lib/cookieStore";
-import { getUserId, getUserOnboardingStatus } from "@/actions/user";
+import { checkUserSession, deleteStoredUser } from "@/lib/cookieStore";
+import { getUserOnboardingStatus } from "@/actions/user";
 
 const Header = () => {
 	const [user, setUser] = useState(null);
 	const [firstName, setFirstName] = useState("");
 	const [photoURL, setPhotoURL] = useState("");
 	const [userOnboarded, setUserOnboarded] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const router = useRouter();
 	const pathname = usePathname();
 
 	useEffect(() => {
-		const handleUserOnboardingStatus = async () => {
-			const userId = await getUserId();
-			if (userId) {
-				const { isOnboarded } = await getUserOnboardingStatus();
+		const confirmUserCookie = async () => {
+			const { cookieExpired } = await checkUserSession();
+			console.log("Cookie expired:", cookieExpired);
 
-				if (isOnboarded) setUserOnboarded(isOnboarded);
-			} else {
+			if (cookieExpired) {
 				await signOut(auth);
+				resetUserState();
 			}
 		};
 
-		handleUserOnboardingStatus();
-	}, [pathname]);
+		confirmUserCookie();
+	}, [router]);
 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
+			setUser(authUser);
 			if (authUser) {
-				setUser(authUser);
 				const userDocRef = doc(db, "users", authUser.uid);
-
-				const unsubscribeDoc = onSnapshot(userDocRef, async (docSnapshot) => {
-					if (docSnapshot.exists()) {
-						// Firestore has user data
-						const userData = docSnapshot.data();
-						setFirstName(userData.firstName || "");
-						setPhotoURL(userData.photoURL || "");
-
-						localStorage.removeItem("GoogleData");
-					} else {
-						// Try recovering Google-stored data
-						const googleStoredData = JSON.parse(
-							localStorage.getItem("GoogleData")
-						);
-						if (googleStoredData) {
-							await setDoc(userDocRef, googleStoredData);
+				try {
+					const unsubscribeDoc = onSnapshot(userDocRef, async (docSnapshot) => {
+						if (docSnapshot.exists()) {
+							// Firestore has user data
+							const userData = docSnapshot.data();
+							setFirstName(userData.firstName || "");
+							setPhotoURL(userData.photoURL || "");
 
 							localStorage.removeItem("GoogleData");
+						} else {
+							// Try recovering Google-stored data
+							const googleStoredData = JSON.parse(
+								localStorage.getItem("GoogleData")
+							);
+							if (googleStoredData) {
+								await setDoc(userDocRef, googleStoredData);
 
-							const createdUserDoc = await getDoc(userDocRef);
-							if (createdUserDoc.exists()) {
-								const userData = createdUserDoc.data();
-								setFirstName(userData.firstName || "");
-								setPhotoURL(userData.photoURL || "");
+								localStorage.removeItem("GoogleData");
+
+								const createdUserDoc = await getDoc(userDocRef);
+								if (createdUserDoc.exists()) {
+									const userData = createdUserDoc.data();
+									setFirstName(userData.firstName || "");
+									setPhotoURL(userData.photoURL || "");
+								}
 							}
 						}
-					}
-				});
+					});
 
-				return () => unsubscribeDoc();
+					const { isOnboarded } = await getUserOnboardingStatus();
+
+					setUserOnboarded(isOnboarded);
+
+					return () => unsubscribeDoc();
+				} catch (error) {
+					console.error("Error fetching user data from Firestore:", error);
+				}
 			} else {
 				resetUserState();
 			}
+
+			setLoading(false);
 		});
 
 		return () => unsubscribe();
@@ -156,17 +165,12 @@ const Header = () => {
 									</Button>
 								</DropdownMenuTrigger>
 								<DropdownMenuContent className="mt-1">
-									<DropdownMenuItem
-										onClick={() => {
-											!userOnboarded
-												? router.push("/onboarding")
-												: router.push("/resume");
-										}}
-										className="flex items-center gap-2 cursor-pointer"
-									>
-										<FileText size={16} />
-										Build Resume
-									</DropdownMenuItem>
+									<Link href={!userOnboarded ? "/onboarding" : "/resume"}>
+										<DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
+											<FileText size={16} />
+											Build Resume
+										</DropdownMenuItem>
+									</Link>
 									<DropdownMenuItem
 										onClick={() =>
 											!userOnboarded

@@ -6,44 +6,47 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 
 import { auth, db } from "@/firebase/firebase";
+import { getUserOnboardingStatus } from "@/actions/user";
 
 export function useGetUserInfo() {
 	const [user, setUser] = useState(null);
 	const [userDetails, setUserDetails] = useState(null);
 	const [loading, setLoading] = useState(true);
+	const [isUserOnboarded, setIsUserOnboarded] = useState(false);
 	const router = useRouter();
 
 	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
-			if (authUser) {
-				setUser(authUser);
+		const unsubscribe = onAuthStateChanged(auth, async (user) => {
+			setUser(user);
 
+			if (user) {
 				try {
-					// Fetch user details from Firestore
-					const userDocRef = doc(db, "users", authUser.uid);
-					const unsubscribeDoc = onSnapshot(userDocRef, async (doc) => {
+					const userDocRef = doc(db, "users", user.uid);
+					const unsubscribeDoc = onSnapshot(userDocRef, (doc) => {
 						if (doc.exists()) {
 							setUserDetails(doc.data());
-						} else {
-							console.warn("No user details found in Firestore.");
 						}
 					});
 
-					// Clean up the Firestore listener when the component unmounts
+					const { isOnboarded } = await getUserOnboardingStatus();
+
+					setIsUserOnboarded(isOnboarded);
+
 					return () => unsubscribeDoc();
 				} catch (error) {
-					console.error("Error fetching user details:", error);
+					console.error(error);
 				}
 			} else {
 				setUser(null);
 				setUserDetails(null);
 				router.push("/");
 			}
+
 			setLoading(false);
 		});
 
 		return () => unsubscribe();
 	}, []);
 
-	return { user, userDetails, loading };
+	return { user, userDetails, loading, isUserOnboarded };
 }

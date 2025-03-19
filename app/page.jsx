@@ -16,35 +16,16 @@ import {
 } from "@/components/ui/accordion";
 import TestimonialSlider from "@/components/testimonial-slider";
 import { Button } from "@/components/ui/button";
-import { auth } from "@/firebase/firebase";
-import { getUserId, getUserOnboardingStatus } from "@/actions/user";
-import { useEffect, useState } from "react";
-import { signOut } from "firebase/auth";
+import { useGetUserInfo } from "@/hooks/get-user-info";
 
-export default function Home() {
-	const [userOnboarded, setUserOnboarded] = useState(false);
-	const currentUser = auth.currentUser;
-
-	useEffect(() => {
-		const handleUserOnboardingStatus = async () => {
-			const userId = await getUserId();
-			if (userId) {
-				const { isOnboarded } = await getUserOnboardingStatus();
-
-				if (isOnboarded) setUserOnboarded(isOnboarded);
-			} else {
-				await signOut(auth);
-			}
-		};
-
-		handleUserOnboardingStatus();
-	}, []);
+const Home = () => {
+	const { user, isUserOnboarded } = useGetUserInfo();
 
 	return (
 		<div>
 			<div className="grid-background"></div>
 
-			<HeroSection currentUser={currentUser} isOnboarded={userOnboarded} />
+			<HeroSection currentUser={user} isOnboarded={isUserOnboarded} />
 
 			{/* Features */}
 			<section className="w-full py-16 md:py-24 lg:py-32 bg-background">
@@ -71,30 +52,6 @@ export default function Home() {
 								</Card>
 							);
 						})}
-					</div>
-				</div>
-			</section>
-
-			<section className="w-full py-16 md:py-24 bg-muted/50">
-				<div className="container mx-auto px-4 md:px-6">
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 max-w-6xl mx-auto">
-						<div className="flex flex-col items-center justify-center space-y-2">
-							<h3 className="text-4xl font-bold">55+</h3>
-							<p className="text-muted-foreground">Industries Covered</p>
-						</div>
-						<div className="flex flex-col items-center justify-center space-y-2">
-							<h3 className="text-4xl font-bold">1000+</h3>
-							<p className="text-muted-foreground">Interview Questions</p>
-						</div>
-						<div className="flex flex-col items-center justify-center space-y-2">
-							<h3 className="text-4xl font-bold">95%</h3>
-							<p className="text-muted-foreground">Success Rate</p>
-						</div>
-
-						<div className="flex flex-col items-center justify-center space-y-2">
-							<h3 className="text-4xl font-bold">24/7</h3>
-							<p className="text-muted-foreground">AI Support</p>
-						</div>
 					</div>
 				</div>
 			</section>
@@ -173,9 +130,9 @@ export default function Home() {
 						</p>
 						<Link
 							href={
-								!currentUser
+								!user
 									? "/sign-in"
-									: !userOnboarded
+									: !isUserOnboarded
 									? "/onboarding"
 									: "/dashboard"
 							}
@@ -194,4 +151,6 @@ export default function Home() {
 			</section>
 		</div>
 	);
-}
+};
+
+export default Home;
