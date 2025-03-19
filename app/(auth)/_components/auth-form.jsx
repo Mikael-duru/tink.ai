@@ -304,9 +304,11 @@ const AuthForm = ({ type }) => {
 				<div className="relative hidden bg-muted lg:block h-[560px]">
 					<Image
 						src="/ai-career-coach.png"
-						fill
-						alt="Image"
-						className="absolute inset-0 h-full w-full object-cover object-center"
+						width={900}
+						height={560}
+						alt="Banner image"
+						className="absolute inset-0 h-[560px] w-auto object-cover object-center"
+						priority
 					/>
 				</div>
 			</CardContent>

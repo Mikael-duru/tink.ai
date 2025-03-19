@@ -62,6 +62,7 @@ const SignInWithGoogle = () => {
 					width={20}
 					height={20}
 					alt="Google logo"
+					priority
 				/>
 				<span className="ml-1">Continue with Google</span>
 			</Button>
