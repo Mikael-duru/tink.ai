@@ -28,3 +28,5 @@ const CoverLetterPage = async () => {
 };
 
 export default CoverLetterPage;
+
+export const dynamic = "force-dynamic";

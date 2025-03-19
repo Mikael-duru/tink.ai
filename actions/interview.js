@@ -90,15 +90,15 @@ export const saveQuizResult = async (questions, answers, score) => {
 };
 
 export const getAssessments = async () => {
+	const userId = await getUserId();
+	if (!userId) throw new Error("Unauthorized");
+
+	const user = await db.user.findUnique({
+		where: { firebaseUserId: userId },
+	});
+	if (!user) throw new Error("User not found");
+
 	try {
-		const userId = await getUserId();
-		if (!userId) throw new Error("Unauthorized");
-
-		const user = await db.user.findUnique({
-			where: { firebaseUserId: userId },
-		});
-		if (!user) throw new Error("User not found");
-
 		const assessments = await db.assessment.findMany({
 			where: { userId: user.id },
 			orderBy: { createdAt: "desc" },
