@@ -1,3 +1,5 @@
+import React from "react";
+
 import HeaderBox from "./header-box";
 import { checkUser } from "@/lib/checkUser";
 
