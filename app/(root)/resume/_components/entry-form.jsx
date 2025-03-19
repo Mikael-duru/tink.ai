@@ -41,6 +41,7 @@ const EntryForm = ({ type, entries, onChange }) => {
 		reset,
 		watch,
 		setValue,
+		getValues,
 		formState: { errors },
 	} = useForm({
 		resolver: zodResolver(resumeEntrySchema(type)),
@@ -96,15 +97,16 @@ const EntryForm = ({ type, entries, onChange }) => {
 	]);
 
 	const handleImproveDescriptionWithAI = async () => {
-		const descriptionText = watch("description");
-		if (!descriptionText) {
-			toast.error("Please enter a description!");
+		const { description, title } = getValues();
+		if (!description || !title) {
+			toast.error("Please fill in both title and description!");
 			return;
 		}
 
 		await improveWithAIFn({
-			current: descriptionText,
-			type: type.toLowerCase(), // "experience", "education" or "project"
+			type: type.toLowerCase(),
+			title,
+			current: description,
 		});
 	};
 
@@ -198,7 +200,7 @@ const EntryForm = ({ type, entries, onChange }) => {
 													)}
 													<ul className="text-xs pl-5">
 														{entry.description
-															.split(".")
+															.split("\n")
 															.filter((sentence) => sentence.trim() !== "")
 															.map((sentence, i) => (
 																<li
@@ -207,7 +209,7 @@ const EntryForm = ({ type, entries, onChange }) => {
 																>
 																	<div className="size-2 mt-1.5 rounded-full bg-primary shrink-0" />
 																	<span className="text-sm">
-																		{sentence.trim()}.
+																		{sentence.trim()}
 																	</span>
 																</li>
 															))}
@@ -352,7 +354,11 @@ const EntryForm = ({ type, entries, onChange }) => {
 								variant="ghost"
 								size="sm"
 								onClick={handleImproveDescriptionWithAI}
-								disabled={isImprovingDescription || !watch("description")}
+								disabled={
+									isImprovingDescription ||
+									!watch("title") ||
+									!watch("description")
+								}
 							>
 								{isImprovingDescription ? (
 									<>
