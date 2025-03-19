@@ -56,8 +56,8 @@ const ResumeDisplay = ({ resumeContent }) => {
 			{summary && (
 				<section>
 					<h2 className="font-bold text-sm">PROFESSIONAL SUMMARY</h2>
-					<Separator className="mt-2 mb-1" />
-					<p className="text-[13px] leading-[1.4]">{summary}</p>
+					<Separator className="mt-2 mb-0.5 bg-muted-foreground" />
+					<p className="text-[13px] leading-[1.4] text-[#333]">{summary}</p>
 				</section>
 			)}
 
@@ -65,7 +65,7 @@ const ResumeDisplay = ({ resumeContent }) => {
 			{skills && (
 				<section>
 					<h2 className="font-bold text-sm">SKILLS</h2>
-					<Separator className="mt-2 mb-1" />
+					<Separator className="mt-2 mb-0.5 bg-muted-foreground" />
 					<ul
 						className={`text-[13px] leading-[1.4] ${
 							skills.split(",").length > 4 && "grid grid-cols-3"
@@ -73,7 +73,7 @@ const ResumeDisplay = ({ resumeContent }) => {
 					>
 						{skills.split(",").map((skill, index) => (
 							<li key={index}>
-								<span className="capitalize">{skill.trim()}</span>
+								<span className="capitalize text-[#333]">{skill.trim()}</span>
 							</li>
 						))}
 					</ul>
@@ -83,25 +83,25 @@ const ResumeDisplay = ({ resumeContent }) => {
 			{/* Work Experience */}
 			{experience.length > 0 && (
 				<section>
-					<h2 className="font-bold text-sm">WORK EXPERIENCE</h2>
-					<Separator className="mt-2 mb-1" />
+					<h2 className="font-bold text-sm w-full">WORK EXPERIENCE</h2>
+					<Separator className="mt-2 mb-0.5 bg-muted-foreground" />
 					{experience.map((entry, index) => {
 						return (
 							<div className="space-y-[2px] mb-2" key={index}>
 								<h3 className="text-[13px] leading-[1.4]">
-									<span className="font-bold capitalize">{entry?.title}</span>
+									<span className="font-medium capitalize">{entry?.title}</span>
 									&nbsp; | &nbsp;{entry?.organization}
 								</h3>
-								<p className="text-[13px] leading-[1.4] text-gray-500">{`${entry.startDate} – ${entry.endDate}`}</p>
+								<p className="text-xs text-gray-500">{`${entry.startDate} – ${entry.endDate}`}</p>
 								<ul className="pl-5">
 									{entry.description
-										.split(".")
+										.split("\n")
 										.filter((sentence) => sentence.trim() !== "")
 										.map((sentence, index) => (
-											<li key={index} className="flex items-center gap-2.5">
+											<li key={index} className="flex items-start gap-2.5">
 												<span className="text-[13px] leading-[1.4]">●</span>
-												<div className="text-[13px] leading-[1.4]">
-													{sentence.trim()}.
+												<div className="text-[13px] leading-[1.4] text-gray-900">
+													{sentence.trim()}
 												</div>
 											</li>
 										))}
@@ -116,12 +116,12 @@ const ResumeDisplay = ({ resumeContent }) => {
 			{projects.length > 0 && (
 				<section>
 					<h2 className="font-bold text-sm">PROJECTS</h2>
-					<Separator className="mt-2 mb-1" />
+					<Separator className="mt-2 mb-0.5 bg-muted-foreground" />
 					{projects.map((entry, index) => {
 						return (
 							<div className="space-y-[2px] mb-2" key={index}>
 								<h3 className="text-[13px] leading-[1.4]">
-									<span className="font-bold capitalize">{entry?.title}</span>
+									<span className="font-medium capitalize">{entry?.title}</span>
 									&nbsp; | &nbsp;
 									<Link href={entry.projectURL} className="text-blue-500">
 										Live Demo
@@ -129,13 +129,13 @@ const ResumeDisplay = ({ resumeContent }) => {
 								</h3>
 								<ul className="pl-5">
 									{entry.description
-										.split(".")
+										.split("\n")
 										.filter((sentence) => sentence.trim() !== "")
 										.map((sentence, index) => (
-											<li key={index} className="flex items-center gap-2.5">
+											<li key={index} className="flex items-start gap-2.5">
 												<span className="text-[13px] leading-[1.4]">●</span>
-												<div className="text-[13px] leading-[1.4]">
-													{sentence.trim()}.
+												<div className="text-[13px] leading-[1.4] text-[#333]">
+													{sentence.trim()}
 												</div>
 											</li>
 										))}
@@ -150,17 +150,17 @@ const ResumeDisplay = ({ resumeContent }) => {
 			{education.length > 0 && (
 				<section>
 					<h2 className="font-bold text-sm">EDUCATION</h2>
-					<Separator className="mt-2 mb-1" />
+					<Separator className="mt-2 mb-0.5 bg-muted-foreground" />
 					{education.map((entry, index) => {
 						return (
 							<div className="space-y-[2px] mb-2" key={index}>
-								<h3 className="text-sm">
-									<span className="font-bold capitalize block">
+								<h3 className="text-[13px] leading-[1.4]">
+									<span className="font-medium capitalize block">
 										{entry?.title}
 									</span>
 									{entry.organization}
 								</h3>
-								<p className="text-[13px] leading-[1.4] text-gray-500">{`${entry.startDate} – ${entry.endDate}`}</p>
+								<p className="text-xs text-gray-500">{`${entry.startDate} – ${entry.endDate}`}</p>
 							</div>
 						);
 					})}
