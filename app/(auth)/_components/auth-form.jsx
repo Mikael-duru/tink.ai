@@ -303,7 +303,7 @@ const AuthForm = ({ type }) => {
 				</div>
 				<div className="relative hidden bg-muted lg:block h-[560px]">
 					<Image
-						src="/ai-career-coach.png"
+						src="/assets/ai-career-coach.png"
 						width={900}
 						height={560}
 						alt="Banner image"

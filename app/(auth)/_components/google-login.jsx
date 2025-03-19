@@ -58,7 +58,7 @@ const SignInWithGoogle = () => {
 			</div>
 			<Button variant="outline" className="w-full" onClick={handleGoogleLogin}>
 				<Image
-					src="/google-logo.png"
+					src="/assets/google-logo.png"
 					width={20}
 					height={20}
 					alt="Google logo"

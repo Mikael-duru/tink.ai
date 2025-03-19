@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useRef } from "react";
 
 import { Button } from "./ui/button";
+import Image from "next/image";
 
 const HeroSection = ({ currentUser, isOnboarded }) => {
 	const imageRef = useRef(null);
@@ -62,12 +62,11 @@ const HeroSection = ({ currentUser, isOnboarded }) => {
 				<div className="hero-image-wrapper px-2">
 					<div ref={imageRef} className="hero-image">
 						<Image
-							src={"/hero-banner.jpeg"}
+							src="/assets/hero-banner.jpeg"
+							alt="Banner for Tink.ai"
 							width={1280}
 							height={720}
-							alt="Banner for Tink.ai"
 							className="rounded-lg shadow-2xl border mx-auto"
-							priority
 						/>
 					</div>
 				</div>
