@@ -3,8 +3,9 @@ import "./globals.css";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { ToasterProvider } from "@/lib/toastProvider";
-import Header from "@/components/header";
+import HeaderComponent from "@/components/header";
 import { Toaster } from "@/components/ui/sonner";
+import FooterComponent from "@/components/footer";
 
 const inter = Inter({
 	subsets: ["latin"],
@@ -28,18 +29,14 @@ export default function RootLayout({ children }) {
 				>
 					<ToasterProvider />
 					{/* header */}
-					<Header />
+					<HeaderComponent />
 
 					{/* content */}
 					<main className="min-h-screen">{children}</main>
 					<Toaster richColors />
 
 					{/* footer */}
-					<footer className="bg-muted/50 py-12">
-						<div className="container mx-auto px-4 text-center">
-							<p className="text-gray-200">Made by Mikael Duru 👍 2025</p>
-						</div>
-					</footer>
+					<FooterComponent />
 				</ThemeProvider>
 			</body>
 		</html>
