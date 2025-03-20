@@ -139,7 +139,7 @@ const Header = () => {
 						alt="Tink.ai Logo"
 						width={200}
 						height={60}
-						className="max-h-10 py-1 w-auto object-contain"
+						className="max-h-10 py-2 w-auto object-contain"
 					/>
 				</Link>
 
