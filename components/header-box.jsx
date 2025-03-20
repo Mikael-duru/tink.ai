@@ -166,12 +166,17 @@ const Header = () => {
 									</Button>
 								</DropdownMenuTrigger>
 								<DropdownMenuContent className="mt-1">
-									<Link href={!userOnboarded ? "/onboarding" : "/resume"}>
-										<DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
-											<FileText size={16} />
-											Build Resume
-										</DropdownMenuItem>
-									</Link>
+									<DropdownMenuItem
+										onClick={() =>
+											!userOnboarded
+												? router.push("/onboarding")
+												: router.push("/resume")
+										}
+										className="flex items-center gap-2 cursor-pointer"
+									>
+										<FileText size={16} />
+										Build Resume
+									</DropdownMenuItem>
 									<DropdownMenuItem
 										onClick={() =>
 											!userOnboarded
