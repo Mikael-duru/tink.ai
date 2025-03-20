@@ -26,5 +26,5 @@ export function middleware(req) {
 }
 
 export const config = {
-	matcher: "/((?!api|_next/static|_next/image|favicon.ico).*)", // Exclude API endpoints, static files, and optimized images.
+	matcher: "/((?!api|_next/static|_next/image|assets|favicon.ico).*)", // Exclude API endpoints, static files, and optimized images.
 };
