@@ -230,7 +230,9 @@ const AuthForm = ({ type }) => {
 								</div>
 							</form>
 						</Form>
+
 						{type === "sign-in" && <SignInWithGoogle />}
+
 						{type !== "forgot-password" && (
 							<footer className="flex justify-center gap-1 text-center">
 								<p className="text-sm font-normal">
