@@ -40,11 +40,14 @@ const Header = () => {
 	useEffect(() => {
 		const confirmUserCookie = async () => {
 			const { cookieExpired } = await checkUserSession();
-			console.log("Cookie expired:", cookieExpired);
 
 			if (cookieExpired) {
 				await signOut(auth);
 				resetUserState();
+				if (user) {
+					toast.error("Session expired. Please sign in again.");
+					router.push("/sign-in");
+				}
 			}
 		};
 
