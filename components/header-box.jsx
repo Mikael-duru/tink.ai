@@ -58,6 +58,9 @@ const Header = () => {
 		const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
 			setUser(authUser);
 			if (authUser) {
+				const { isOnboarded } = await getUserOnboardingStatus();
+				setUserOnboarded(isOnboarded);
+
 				const userDocRef = doc(db, "users", authUser.uid);
 				try {
 					const unsubscribeDoc = onSnapshot(userDocRef, async (docSnapshot) => {
@@ -87,11 +90,6 @@ const Header = () => {
 							}
 						}
 					});
-
-					const { isOnboarded } = await getUserOnboardingStatus();
-
-					setUserOnboarded(isOnboarded);
-
 					return () => unsubscribeDoc();
 				} catch (error) {
 					console.error("Error fetching user data from Firestore:", error);
