@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Tink.ai App  
 
-## Getting Started
+An AI-powered career coaching application built with Next.js 15, Inngest, Tailwind CSS, Prisma, Neon, Firebase, ShadCN, Cloudinary, and Gemini AI.  
 
-First, run the development server:
+## 🚀 Features  
+- **AI Career Guidance** – Get AI-powered career advice and interview coaching using Gemini AI.  
+- **Resume Builder** – Design tailored resumes with features that generate scores for Applicant Tracking Systems (ATS) optimization.  
+- **PDF Export** – Convert resumes to PDFs using HTML2PDF.  
+- **Database Management** – Prisma ORM with Neon as the PostgreSQL database provider.  
+- **Authentication** – Secure user authentication with Firebase.  
+- **Event-Driven Actions** – Background job processing with Inngest.  
+- **Modern UI** – Responsive and accessible UI with Tailwind CSS and ShadCN components.
+- **Profile Image Management** – Upload and change profile picture using Cloudinary.  
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🛠️ Tech Stack  
+- **Framework:** Next.js 15 (App Router)  
+- **Styling:** Tailwind CSS, ShadCN  
+- **Database:** Prisma, Neon  
+- **Authentication:** Firebase  
+- **AI Integration:** Gemini AI  
+- **Background Jobs:** Inngest  
+- **PDF Generation:** HTML2PDF  
+- **Drag & Drop:** @hello-pangea/dnd
+- **Profile Image Upload:** Cloudinary
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📦 Installation  
+1. Clone the repository:  
+   ```bash
+   git clone https://github.com/Mikael-duru/tink.ai.git
+   cd tink.ai
+   ```
+2. Install dependencies:  
+   ```bash
+   npm install
+   ```
+3. Set up environment variables in a `.env` file:  
+   ```env
+   # Firebase
+    NEXT_PUBLIC_FIREBASE_API_KEY=
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+    NEXT_PUBLIC_FIREBASE_APP_ID=
+    NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+    # Firebase Admin
+    FIREBASE_PROJECT_ID=
+    FIREBASE_CLIENT_EMAIL=
+    FIREBASE_PRIVATE_KEY=
+    
+    # Clodinary
+    NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=
+    NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=
+    CLOUDINARY_API_SECRET=
+    CLOUDINARY_API_KEY=
+    
+    # Neon Postgresql
+    DATABASE_URL=
+    
+    # Gemini API
+    GEMINI_API_KEY=
+   ```
+4. Run the development server:  
+   ```bash
+   npm run dev
+   ```
+5. Open `http://localhost:3000` in your browser.  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🏗️ Usage  
+- Sign in with Firebase authentication.  
+- Use AI-powered coaching for career insights and interview preparation.
+- Generate industry-specific cover letter.  
+- Build, customize, and rearrange resume sections using drag-and-drop.  
+- Export resumes as PDFs.  
+---  
+Built with ❤️ using Next.js and AI.  
