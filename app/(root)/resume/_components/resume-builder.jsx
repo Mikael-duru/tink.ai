@@ -140,18 +140,27 @@ const ResumeBuilder = ({
 		}
 	};
 
+	useEffect(() => {
+		if (atsScoreAndFeedbackContent && !isGeneratingAtsScoreAndFeedback) {
+			toast.success("ATS score generated successfully!");
+			setIsSheetOpen(true);
+			setAtsScore(atsScoreAndFeedbackContent?.atsScore);
+			setFeedback(atsScoreAndFeedbackContent?.feedback);
+		}
+		if (atsScoreAndFeedbackError) {
+			toast.error("Failed to generate ATS score!");
+		}
+	}, [
+		atsScoreAndFeedbackContent,
+		isGeneratingAtsScoreAndFeedback,
+		atsScoreAndFeedbackError,
+	]);
+
 	const handleGenerateAtsScore = async () => {
 		try {
 			await getAtsScoreAndFeedbackFn({ current: formValues });
-
-			if (atsScoreAndFeedbackContent && !atsScoreAndFeedbackError) {
-				setIsSheetOpen(true);
-				setAtsScore(atsScoreAndFeedbackContent?.atsScore);
-				setFeedback(atsScoreAndFeedbackContent?.feedback);
-			}
 		} catch (error) {
 			console.error("Error fetching ATS score:", error.message || error);
-			toast.error("Failed to fetch ATS score.");
 		}
 	};
 
@@ -475,7 +484,7 @@ const ResumeBuilder = ({
 						>
 							{isGeneratingAtsScoreAndFeedback ? (
 								<>
-									<Loader2 className="size-4 mr-2 animate-spin" /> Generating...
+									<Loader2 className="size-4 animate-spin" /> Generating...
 								</>
 							) : (
 								"Generate ATS Score"
