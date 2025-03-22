@@ -6,7 +6,8 @@ An AI-powered career coaching application built with Next.js 15, Inngest, Tailwi
 - **AI Career Guidance** – Get AI-powered career advice and interview coaching using Gemini AI.  
 - **Resume Builder** – Design tailored resumes with features that generate scores for Applicant Tracking Systems (ATS) optimization.  
 - **PDF Export** – Convert resumes to PDFs using HTML2PDF.  
-- **Database Management** – Prisma ORM with Neon as the PostgreSQL database provider.  
+- **Database Management** – Prisma ORM with Neon as the PostgreSQL database provider.
+- **Data Visualization** – Interactive charts and graphs using Recharts.
 - **Authentication** – Secure user authentication with Firebase.  
 - **Event-Driven Actions** – Background job processing with Inngest.  
 - **Modern UI** – Responsive and accessible UI with Tailwind CSS and ShadCN components.
@@ -15,7 +16,8 @@ An AI-powered career coaching application built with Next.js 15, Inngest, Tailwi
 ## 🛠️ Tech Stack  
 - **Framework:** Next.js 15 (App Router)  
 - **Styling:** Tailwind CSS, ShadCN  
-- **Database:** Prisma, Neon  
+- **Database:** Prisma, Neon
+- **Charts & Graphs:** Recharts
 - **Authentication:** Firebase  
 - **AI Integration:** Gemini AI  
 - **Background Jobs:** Inngest  
