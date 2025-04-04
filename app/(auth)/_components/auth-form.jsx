@@ -70,7 +70,9 @@ const AuthForm = ({ type }) => {
 		},
 	});
 
-	const handleRegister = async (email, password, firstName, lastName) => {
+	const handleRegister = async (e, email, password, firstName, lastName) => {
+		e.preventDefault();
+		
 		const { user } = await createUserWithEmailAndPassword(
 			auth,
 			email,
@@ -91,7 +93,8 @@ const AuthForm = ({ type }) => {
 		router.push("/sign-in");
 	};
 
-	const handleAuthenticate = async (email, password) => {
+	const handleAuthenticate = async (e, email, password) => {
+		e.preventDefault();
 		const userCredential = await signInWithEmailAndPassword(
 			auth,
 			email,
