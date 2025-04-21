@@ -76,4 +76,4 @@ An AI-powered career coaching application built with Next.js 15, Inngest, Tailwi
 - Build, customize, and rearrange resume sections using drag-and-drop.  
 - Export resumes as PDFs.  
 ---  
-Built with ❤️ using Next.js and AI.  
+Built with ❤️ using Next.js.  
